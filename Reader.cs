@@ -84,6 +84,7 @@ namespace Barton___Y2_Project
             Rectangle dimensions = new Rectangle(0, 0, width, height);
             BitmapData bmd = bitmap.LockBits(dimensions, ImageLockMode.ReadOnly, bitmap.PixelFormat);
             IntPtr intPtr = bmd.Scan0;
+
             int amountOfBytes = Math.Abs(bmd.Stride) * bitmap.Height;
 
 
