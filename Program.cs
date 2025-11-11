@@ -9,83 +9,122 @@ class Program
     static void Main(string[] args)
     {
 
-        Reader.ReadHiddenMessage();
 
-        string inputBeautify = "\n>>> ";
-        string lineBreaker = "\n=========================================================================\n";
+
         string fileLoc;
 
+
+
+        // --- FORMATTING ---
+        // "IMAGE TOOLBOX".
+        Console.Write(PrintConsoleBlock("  _____ __  __          _____ ______   _______ ____   ____  _      ____   ______   __\r\n |_   _|  \\/  |   /\\   / ____|  ____| |__   __/ __ \\ / __ \\| |    |  _ \\ / __ \\ \\ / /\r\n   | | | \\  / |  /  \\ | |  __| |__       | | | |  | | |  | | |    | |_) | |  | \\ V / \r\n   | | | |\\/| | / /\\ \\| | |_ |  __|      | | | |  | | |  | | |    |  _ <| |  | |> <  \r\n  _| |_| |  | |/ ____ \\ |__| | |____     | | | |__| | |__| | |____| |_) | |__| / . \\ \r\n |_____|_|  |_/_/    \\_\\_____|______|    |_|  \\____/ \\____/|______|____/ \\____/_/ \\_\\\r\n                                                                                     \r\n                                                                                     ", false));
+
+
+
+        // Asks user what they want to do.
+        // Repeats forever until valid input.
+        // TODO: Add option to exit program.
+        // TODO: Refactor into own method.
+        // TODO: Clear console when necessary.
+        // TODO: Handle null or whitespace.
         while (true)
         {
-            Console.Write("-- Please input the file location of an image to encode. --" + inputBeautify);
+            Console.Write(PrintConsoleBlock("Would you like to read or write 1/2", true));
+            string choice = Console.ReadLine().Trim();
+            if (choice == "1")
+            {
+                break;
+            }
+            else if (choice == "2")
+            {
+                Reader.ReadHiddenMessage();
+                return;
+            }
+            else
+            {
+                Console.Write(PrintConsoleBlock("--- INVALID: PLEASE SELECT A NUMBER ---", false));
+            }
+        }
+
+
+
+        // Infinite loop to ask user for file loc.
+        while (true)
+        {
+            Console.Write(PrintConsoleBlock("Please enter the file location of an image to read.", true));
             fileLoc = Console.ReadLine().Trim().Trim('"');
             if (!File.Exists(fileLoc))
             {
-                Console.WriteLine(lineBreaker);
-                Console.WriteLine("---INVALID: FILE DOES NOT EXIST---");
-                Console.WriteLine(lineBreaker);
+                Console.Write(PrintConsoleBlock("--- INVALID: FILE DOES NOT EXIST ---s", false));
             }
             else
             {
                 break;
             }
         }
-        
-        var bitmap = new Bitmap(fileLoc);
 
+
+
+        // Defines vars to be used later.
+        var bitmap = new Bitmap(fileLoc);
         int width = bitmap.Width;
         int height = bitmap.Height;
         int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
 
+
+
         // C:\Users\proga\Desktop\24Depth.png
         // C:\Users\proga\Desktop\32Depth.png
+        // "C:\Users\proga\Desktop\Modified_Lockbits.png
 
-        // "C:\Users\proga\Desktop\Modified_Lockbits.png"
 
-        Console.WriteLine(lineBreaker);
 
+        // Displays imag details based on if image is 24 of 32 bit depth.
         if (bytesPerPixel == 3)
         {
-            long maxLength = ((long)width * height * 3);
-            Console.WriteLine(
+            long maxLength = ((long)(width * height * 3) / 8);
+            Console.Write(
                 $"---IMAGE DETAILS---" +
                 $"\n ==Width:      {width}px" +
                 $"\n ==Height:     {height}px" +
                 $"\n ==Bit Depth : 24" +
-                $"\n---MAX MESSAGE LENGTH: {maxLength:N0} characters---");
+                $"\n---MAX MESSAGE LENGTH: {maxLength:N0} characters---\n");
         }
         else if (bytesPerPixel == 4)
         {
             long maxLength = ((long)width * height * 4);
-            Console.WriteLine(
+            Console.Write(
                 $"---IMAGE DETAILS---" +
                 $"\n ==Width:      {width}" +
                 $"\n ==Height:     {height}" +
                 $"\n ==Bit Depth : 32" +
-                $"\n---MAX MESSAGE LENGTH: {maxLength:N0} characters---");
+                $"\n---MAX MESSAGE LENGTH: {maxLength:N0} characters---\n");
         }
         else
         {
-            Console.WriteLine("---INVALID: BIT DEPTH UNSUPPORTED---");
+            Console.Write("---INVALID: BIT DEPTH UNSUPPORTED---");
         }
 
-        Console.WriteLine(lineBreaker);
 
-        Console.Write("-- Please input the message to hide within this image. --" + inputBeautify);
-        // Reads and converts inputted message to Binary.
+
+        // TODO: Handle special chars.
+        // Gets inputted message.
+        Console.Write(PrintConsoleBlock("-- Please input the message to hide within this image. --", true));
         string inputtedMessage = Console.ReadLine();
-        string hiddenMessagePreDeclaration = StringToBinary(inputtedMessage);
+        string hiddenMessagePreDeclaration = ConvertStringToBinary(inputtedMessage);
+
+
 
         // Gets the length of the converted-to-binary message and stores that length as a 32-bit binary string.
         int messageLength = inputtedMessage.Length;
-        Console.WriteLine(messageLength);
+        Console.Write(messageLength);
         string hiddenMessageBinaryDeclaration = Convert.ToString(messageLength, 2).PadLeft(32, '0');
-        Console.WriteLine(hiddenMessageBinaryDeclaration);
-        Console.WriteLine(hiddenMessageBinaryDeclaration.Length);
+        Console.Write(hiddenMessageBinaryDeclaration);
+        Console.Write(hiddenMessageBinaryDeclaration.Length);
 
         string hiddenMessage = hiddenMessageBinaryDeclaration + hiddenMessagePreDeclaration;
 
-        Console.WriteLine(lineBreaker);
+
 
         Rectangle dimensions = new Rectangle(0, 0, width, height);
 
@@ -107,37 +146,21 @@ class Program
         int messageIndex = 0;
 
 
-
+        // C:\Users\proga\Desktop\24Depth.png
         // Loops through each pixel and puts the leading bit as a 0.
-        for (int i = 0; i < rgbValues.Length && messageIndex < hiddenMessage.Length; i += bytesPerPixel)
+        for (int i = 0; i < rgbValues.Length; i++)
         {
             byte blue = rgbValues[i];
-            byte green = rgbValues[i + 1];
-            byte red = rgbValues[i + 2];
-            byte alpha = bytesPerPixel == 4 ? rgbValues[i + 3] : (byte)255;
 
             // Encode into Blue
             if (messageIndex < hiddenMessage.Length)
+            {
                 blue = (byte)((blue & ~1) | (hiddenMessage[messageIndex++] - '0'));
 
-            // Encode into Green
-            if (messageIndex < hiddenMessage.Length)
-                green = (byte)((green & ~1) | (hiddenMessage[messageIndex++] - '0'));
-
-            // Encode into Red
-            if (messageIndex < hiddenMessage.Length)
-                red = (byte)((red & ~1) | (hiddenMessage[messageIndex++] - '0'));
-
-            // Encode into Alpha (if present)
-            if (bytesPerPixel == 4 && messageIndex < hiddenMessage.Length)
-                alpha = (byte)((alpha & ~1) | (hiddenMessage[messageIndex++] - '0'));
+            }
 
             // Save modified bytes
             rgbValues[i] = blue;
-            rgbValues[i + 1] = green;
-            rgbValues[i + 2] = red;
-            if (bytesPerPixel == 4)
-                rgbValues[i + 3] = alpha;
         }
 
 
@@ -146,21 +169,42 @@ class Program
         bitmap.UnlockBits(bitmapData);
 
         string savePath = "C:\\Users\\proga\\Desktop\\Modified_Lockbits.png";
+        Console.Write(savePath);
+        Console.Write(fileLoc);
         bitmap.Save(savePath);
 
-        Console.WriteLine(hiddenMessage);
+        Console.Write(hiddenMessage);
 
-        Console.WriteLine("Image successfully modified and saved to: " + savePath);
+        Console.Write("Image successfully modified and saved to: " + savePath);
     }
 
-    static string StringToBinary(string input)
+
+
+    // Takes a binary string and returns it in ASCII.
+    static string ConvertStringToBinary(string stringToConvert)
     {
-        StringBuilder sb = new StringBuilder();
-        foreach (char c in input.ToCharArray())
+        StringBuilder convertedString = new StringBuilder();
+        foreach (char c in stringToConvert.ToCharArray())
         {
-            sb.Append(Convert.ToString(c, 2).PadLeft(8, '0'));
+            convertedString.Append(Convert.ToString(c, 2).PadLeft(8, '0'));
         }
-        return sb.ToString();
+        return convertedString.ToString();
+    }
+
+
+
+    // Takes message to print to console in a more appealing way.
+    // If inputted message wants user input it formats as such.
+    static string PrintConsoleBlock(string consoleOutput, bool hasUserInput)
+    {
+        StringBuilder consoleBlock = new StringBuilder();
+        consoleBlock.Append("\n=========================================================================\n");
+        consoleBlock.Append(consoleOutput);
+        if (hasUserInput)
+        {
+            consoleBlock.Append("\n>>> ");
+        }
+        return consoleBlock.ToString();
     }
 }
 

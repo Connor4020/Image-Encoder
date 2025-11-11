@@ -78,7 +78,7 @@ namespace Barton___Y2_Project
                 Console.WriteLine("---INVALID: BIT DEPTH UNSUPPORTED---");
             }
 
-
+            
 
             // Defines vars to be used later.
             Rectangle dimensions = new Rectangle(0, 0, width, height);
@@ -98,9 +98,8 @@ namespace Barton___Y2_Project
             Console.WriteLine(lineBreaker);
 
 
-
+            
             string messageLengthAsBinary = "";
-
             for (int i = 0; i <= 31; i++)
             {
                 byte blueByte = rgbValues[i];
@@ -131,15 +130,14 @@ namespace Barton___Y2_Project
                 binaryMessage += lsb;
             }
 
+
+
+            // Outputs the hidden message.
             Console.WriteLine(BinaryToAscii(binaryMessage));
 
-            /*
-            foreach (string b in binaryMessageArray)
-            {
-                Console.WriteLine(b);
-            }
-            */
 
+
+            // Gets binary string and converts it to ASCII.
             static string BinaryToAscii(string binary)
             {
                 StringBuilder text = new StringBuilder();
@@ -147,8 +145,8 @@ namespace Barton___Y2_Project
                 for (int i = 0; i < binary.Length; i += 8)
                 {
                     string byteString = binary.Substring(i, 8);
-                    byte b = Convert.ToByte(byteString, 2);
-                    text.Append((char)b);
+                    byte letter = Convert.ToByte(byteString, 2);
+                    text.Append((char)letter);
                 }
                 return text.ToString();
             }
