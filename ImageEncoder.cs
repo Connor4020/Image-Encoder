@@ -19,40 +19,64 @@ namespace Barton___Y2_Project
         {
             ConsoleHelper.PrintConsoleBlock(" --- Please input the file location of an image to encode. --- ", true);
             string fileLoc = Console.ReadLine();
+            // TODO: Display image metadata before encoding.
 
+            // TODO: change to while loop with break instead of recursion.
             if (ImageHelper.VerifyFileExists(fileLoc) == false)
             {
-                ConsoleHelper.PrintConsoleBlock(" --- The file path you have entered does not exist. Please try again. --- ", false);
-                return;
+                ConsoleHelper.PrintConsoleBlock(" --- The file path you have entered does not exist. Please try again. \n--- ", false);
+                GetMessageInfo();
             }
-
             ConsoleHelper.PrintConsoleBlock(" --- Please input the message to hide within this image. --- ", true);
             string inputtedMessage = Console.ReadLine();
 
-            ImageMetadata imgData = ImageHelper.GetImageMetadata(fileLoc);
+            //TODO: Add herror handling.
+            
+            ConsoleHelper.PrintConsoleBlock(" --- Please input a password to protect your message with (leave blank for no password). --- ", true);
+            string inputtedPassword = Console.ReadLine();
+
+            // TODO: Ask if user wants this done.
+            File.SetCreationTime(fileLoc, DateTime.Now);
+
+
+
             HiddenMessage hiddenmessage = new HiddenMessage(inputtedMessage);
 
             EncodeHiddenMessage(fileLoc, hiddenmessage);
+            Console.Clear();
+
+            ConsoleHelper.PrintConsoleBlock($"Image encoded to: {Path.GetDirectoryName(fileLoc)}\\COPY.png\n", false);
         }
 
 
 
         public static void EncodeHiddenMessage(string fileLocation, HiddenMessage message)
         {
-            using (var bitmap = new Bitmap(fileLocation))
+
+            byte[] fileBytes = File.ReadAllBytes(fileLocation);
+            using (var ms = new MemoryStream(fileBytes))
+            using (var bitmap = new Bitmap(ms))
             {
                 Rectangle dimensions = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
                 BitmapData bitmapData = bitmap.LockBits(dimensions, ImageLockMode.ReadWrite, bitmap.PixelFormat);
-                IntPtr intPtr = bitmapData.Scan0;
+
+                IntPtr ptr = bitmapData.Scan0;
                 int totalBytes = Math.Abs(bitmapData.Stride) * bitmap.Height;
                 byte[] rgbValues = new byte[totalBytes];
-                Marshal.Copy(intPtr, rgbValues, 0, totalBytes);
+
+                Marshal.Copy(ptr, rgbValues, 0, totalBytes);         
+                
                 for (int i = 0; i < message.FullEncodedMessage.Length; i++)
                 {
-                    byte colorByte = rgbValues[i];
-                    colorByte = (byte)((colorByte & ~1) | (message.FullEncodedMessage[i] - '0'));
-                    rgbValues[i] = colorByte;
+                    byte oldByte = rgbValues[i];
+                    byte newBit = (byte)(message.FullEncodedMessage[i] - '0');
+                    rgbValues[i] = (byte)((oldByte & ~1) | newBit);
                 }
+
+                Marshal.Copy(rgbValues, 0, ptr, totalBytes);
+                bitmap.UnlockBits(bitmapData);
+
+                bitmap.Save(Path.GetDirectoryName(fileLocation) + "\\COPY.png" , ImageFormat.Png);
             }
         }
     }

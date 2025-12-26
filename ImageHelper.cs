@@ -12,27 +12,11 @@ namespace Barton___Y2_Project
 
 
 
-        // May be unneaded but still here for expandability.
+        // May not need to be in it's own class but still here for expandability.
         public static bool VerifyFileExists(string inputtedPath)
         {
-            inputtedPath.Trim().Trim('"');
+            inputtedPath = inputtedPath.Trim().Trim('"');
             return File.Exists(inputtedPath);   
-        }
-
-
-
-        // Returns ImageMetadata object. 
-        public static ImageMetadata GetImageMetadata(string inputtedPath)
-        {
-            using (var img = Image.FromFile(inputtedPath))
-            {
-                int width = img.Width;
-                int height = img.Height;
-                int bitDepth = Image.GetPixelFormatSize(img.PixelFormat);
-                int maxCharLength = ((width * height * bitDepth) / 8) - 32;
-
-                return new ImageMetadata(width, height, bitDepth, maxCharLength);
-            }
         }
     }
 }
