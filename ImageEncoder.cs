@@ -12,47 +12,55 @@ namespace Barton___Y2_Project
 {
     internal class ImageEncoder
     {
-        
-
-        // Asks user for image location and message to hide. Passes into function underneath.
         public static void GetMessageInfo()
         {
-            ConsoleHelper.PrintConsoleBlock(" --- Please input the file location of an image to encode. --- ", true);
-            string fileLoc = Console.ReadLine();
-            // TODO: Display image metadata before encoding.
-
-            // TODO: change to while loop with break instead of recursion.
-            if (ImageHelper.VerifyFileExists(fileLoc) == false)
+            // Asks for location of image to encode.
+            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to encode.", true);
+            string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            while (fileLoc == null)
             {
-                ConsoleHelper.PrintConsoleBlock(" --- The file path you have entered does not exist. Please try again. \n--- ", false);
-                GetMessageInfo();
+                ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
+                fileLoc = Console.ReadLine();
             }
-            ConsoleHelper.PrintConsoleBlock(" --- Please input the message to hide within this image. --- ", true);
-            string inputtedMessage = Console.ReadLine();
+            // TODO: Refactor meta data displayer and view metadata before encoding.
 
-            //TODO: Add herror handling.
+
+            // Asks for message to encode.
+            ConsoleHelper.PrintConsoleBlock("Please input the message to hide within this image:", true);
+            string inputtedMessage = Console.ReadLine();
+            while (!String.IsNullOrWhiteSpace(inputtedMessage))
+            {
+                ConsoleHelper.PrintConsoleBlock("Invalid. The message must be at least one character long.", true);
+                inputtedMessage = Console.ReadLine();
+            }
+
             
-            ConsoleHelper.PrintConsoleBlock(" --- Please input a password to protect your message with (leave blank for no password). --- ", true);
+            // Asks for password.
+            // Doesn't need error handling cos null values are accepted and whitespace is allowed in the password.
+            ConsoleHelper.PrintConsoleBlock("Please input a password to protect your message with (leave blank for no password):", true);
             string inputtedPassword = Console.ReadLine();
 
-            // TODO: Ask if user wants this done.
-            File.SetCreationTime(fileLoc, DateTime.Now);
 
-
-
+            // Creates new instance of class using req field of 'message'.
+            // It passes this into the main function. This is done cos the message class has stuff like 'FullEncodedMessage' to make stuff a lil easier. (Also just better reusability).
             HiddenMessage hiddenmessage = new HiddenMessage(inputtedMessage);
-
-            EncodeHiddenMessage(fileLoc, hiddenmessage);
-            Console.Clear();
-
-            ConsoleHelper.PrintConsoleBlock($"Image encoded to: {Path.GetDirectoryName(fileLoc)}\\COPY.png\n", false);
+            bool succession = EncodeHiddenMessage(fileLoc, hiddenmessage);
+            if (succession)
+            {
+                ConsoleHelper.PrintConsoleBlock($"Image encoded to: {Path.GetDirectoryName(fileLoc)}\\COPY.png.", false);
+            }
+            else
+            {
+                ConsoleHelper.PrintConsoleBlock("There may have been an issue encoding your message into the image.", false)
+            }
+            ConsoleHelper.ReturnToMenuPrompt();
         }
 
 
 
-        public static void EncodeHiddenMessage(string fileLocation, HiddenMessage message)
+        // Main function.
+        public static bool EncodeHiddenMessage(string fileLocation, HiddenMessage message)
         {
-
             byte[] fileBytes = File.ReadAllBytes(fileLocation);
             using (var ms = new MemoryStream(fileBytes))
             using (var bitmap = new Bitmap(ms))
@@ -76,7 +84,16 @@ namespace Barton___Y2_Project
                 Marshal.Copy(rgbValues, 0, ptr, totalBytes);
                 bitmap.UnlockBits(bitmapData);
 
-                bitmap.Save(Path.GetDirectoryName(fileLocation) + "\\COPY.png" , ImageFormat.Png);
+                // Error handling just in case anything goes wrong.
+                try
+                {
+                    bitmap.Save(Path.GetDirectoryName(fileLocation) + "\\COPY.png", ImageFormat.Png);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
     }

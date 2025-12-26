@@ -12,18 +12,33 @@ namespace Barton___Y2_Project
         public static void AlterCreationDate()
         {
 
-            ConsoleHelper.PrintConsoleBlock(" --- Please input the file location of an image to set it's creation date. --- ", true);
+            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to set it's creation date:", true);
             string fileLoc = Console.ReadLine();
             fileLoc = fileLoc.Trim('"').Trim();
             // Checks if filepath exists.
             while (ImageHelper.VerifyFileExists(fileLoc) == false)
             {
-                ConsoleHelper.PrintConsoleBlock(" --- Invalid file path, please try again. --- ", true);
+                ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
+                fileLoc = Console.ReadLine();
             }
             
-            ConsoleHelper.PrintConsoleBlock(" --- Would you like to set a custom date or use the current date/time? --- \n(1) Custom Date \n(2) Current Date/Time", true);
-            int decision = Convert.ToInt32(Console.ReadLine());
-            // Checks for valid decision.
+            ConsoleHelper.PrintConsoleBlock("Would you like to set a custom date or use the current date/time?\n(1) Custom Date \n(2) Current Date/Time", true);
+            string decisionString = Console.ReadLine();
+            // If input is an int, move on.
+            while (true)
+            {
+                if (!ImageHelper.isInt(decisionString))
+                {
+                    ConsoleHelper.PrintConsoleBlock("Please enter a valid decision:", true);
+                    decisionString = Console.ReadLine();
+                }
+                else
+                {
+                    break;
+                }
+            }
+            int decision = int.Parse(decisionString);
+
             while (decision == null || decision > 3 || decision < 0)
             {
                 ConsoleHelper.PrintConsoleBlock(" --- Invalid option, please select (1) or (2) ---", true);
@@ -32,28 +47,28 @@ namespace Barton___Y2_Project
 
             // Asks for custome data and time.
             // Uses that for file D&T.
-            // 20 / 12 / 2025 15:31:36
+            // Placeholder: 20 / 12 / 2025 15:31:36
             if (decision == 1)
             {
-                ConsoleHelper.PrintConsoleBlock(" --- Please input your custom date and time in the format: DD/MM/YYYY HH:MM:SS --- \n(Please not that dates in the future won't work).", true);
+                ConsoleHelper.PrintConsoleBlock("Please input your custom date and time in the format: DD/MM/YYYY HH:MM:SS\n(Please not that dates in the future won't work):", true);
                 string customDT = Console.ReadLine();
                 while (!DateTime.TryParse(customDT, out _))
                 {
-                    ConsoleHelper.PrintConsoleBlock(" --- Invalid format, please try again: \n", true);
+                    ConsoleHelper.PrintConsoleBlock("Invalid format, please try again:", true);
                     customDT = Console.ReadLine();
                 }
                 File.SetCreationTime(fileLoc, DateTime.Parse(customDT));
-                ConsoleHelper.PrintConsoleBlock($" --- The file at {fileLoc} has had their data and time changed to {customDT}\n", false);
+                ConsoleHelper.PrintConsoleBlock($"The file at {fileLoc} has had their data and time changed to {customDT}.", false);
             }
 
             // Sets time and date to rn.
             if (decision == 2)
             {
                 File.SetCreationTime(fileLoc, DateTime.Now);
-                ConsoleHelper.PrintConsoleBlock($" --- The file at {fileLoc} has had their data and time changed to {DateTime.Now}\n", false);
+                ConsoleHelper.PrintConsoleBlock($"The file at {fileLoc} has had their data and time changed to {DateTime.Now}.", false);
             }
 
-            ConsoleHelper.PrintConsoleBlock(" --- Please press enter to return to the menu: ", true);
+            ConsoleHelper.PrintConsoleBlock("Please press enter to return to the menu:", true);
             Console.ReadLine();
             Console.Clear();
         }

@@ -22,20 +22,23 @@ namespace Barton___Y2_Project
 
 
 
+        // Defines variables.
         public ImageMetadata(string fileLocation)
         {
             FileLocation = fileLocation.Trim().Trim('"');
             Width = Image.FromFile(FileLocation).Width;
             Height = Image.FromFile(FileLocation).Height;
-
             var img = Image.FromFile(FileLocation);
             PixelFormat pf = img.PixelFormat;
             BitDepth = Image.GetPixelFormatSize(pf);
-
             MaxCharLength = (Width * Height * BitDepth) / 8;
             ImgFormat = Image.FromFile(FileLocation).RawFormat;
             DateCreated = File.GetCreationTime(FileLocation);
         }
+
+
+
+        // TODO: FUncion here to handle asking fileLoc to display metadata.
 
 
 
