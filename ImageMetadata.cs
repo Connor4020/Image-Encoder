@@ -43,34 +43,20 @@ namespace Barton___Y2_Project
 
 
         // Creates instance of ImageMetadata and displays all info to the user.
-        public static void DisplayImageMetadata()
+        public static void DisplayImageMetadata(string fileLoc)
         {
-            while (true)
-            {
-                ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to view its metadata:", true);
-                string fileLoc = Console.ReadLine().Trim().Trim('"');
-                if (!ImageHelper.VerifyFileExists(fileLoc))
-                {
-                    ConsoleHelper.PrintConsoleBlock("The inputted image location does not exist, try again. \n", false);
-                }
-                else
-                {
-                    ImageMetadata imgMetaData = new ImageMetadata(fileLoc);
-                    ConsoleHelper.PrintConsoleBlock("Image Meta Details: \n" +
-                        "\nWidth:             " + imgMetaData.Width + "px" +
-                        "\nHeight:            " + imgMetaData.Height + "px" +
-                        "\nBitDepth:          " + imgMetaData.BitDepth + "bits per pixel" +
-                        "\nMax Encoded Chars: " + String.Format($"{imgMetaData.MaxCharLength:N0}") +
-                        "\nFormat:            " + imgMetaData.ImgFormat +
-                        "\nDate Created:      " + imgMetaData.DateCreated + "\n"
-                        , false);
+            var meta = new ImageMetadata(fileLoc);
+            var sb = new StringBuilder();
+            sb.AppendLine("Image metadata:");
+            sb.AppendLine();
+            sb.AppendLine($"{"Width",-18}: {meta.Width:N0}px");
+            sb.AppendLine($"{"Height",-18}: {meta.Height:N0}px");
+            sb.AppendLine($"{"Bit depth",-18}: {meta.BitDepth} bpp");
+            sb.AppendLine($"{"Max encoded chars",-18}: {meta.MaxCharLength:N0}");
+            sb.AppendLine($"{"Format",-18}: {meta.ImgFormat}");
+            sb.AppendLine($"{"Date created",-18}: {meta.DateCreated:yyyy-MM-dd HH:mm:ss}");
 
-                    ConsoleHelper.PrintConsoleBlock("Press any button to return to the starting menu.", true);
-                    Console.ReadLine();
-                    Console.Clear();
-                    break;
-                }
-            }
+            ConsoleHelper.PrintConsoleBlock(sb.ToString(), false);
         }
     }
 }

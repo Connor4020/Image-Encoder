@@ -37,7 +37,7 @@ namespace Barton___Y2_Project
         new ToolOption("Exit Program", 0, () => Environment.Exit(0)),
         new ToolOption("Read Hidden Message", 1, ImageDecoder.GetImageInfo),
         new ToolOption("Write Hidden Message", 2, ImageEncoder.GetMessageInfo),
-        new ToolOption("View Image Metadata", 3, ImageMetadata.DisplayImageMetadata),
+        //new ToolOption("View Image Metadata", 3, ImageMetadata.DisplayImageMetadata),
         new ToolOption("Change Image Creation Date", 4, ChangeCreationDate.AlterCreationDate),
         new ToolOption("Convert Image Format", 5, ConvertImageFormat.ConvertFormat),
         };

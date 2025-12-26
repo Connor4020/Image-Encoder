@@ -22,7 +22,11 @@ namespace Barton___Y2_Project
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
                 fileLoc = Console.ReadLine();
             }
-            // TODO: Refactor meta data displayer and view metadata before encoding.
+            
+
+            // Displays metadata before asking other questions.
+            // This is so they know how much info they can store.
+            ImageMetadata.DisplayImageMetadata(fileLoc);
 
 
             // Asks for message to encode.
@@ -51,7 +55,7 @@ namespace Barton___Y2_Project
             }
             else
             {
-                ConsoleHelper.PrintConsoleBlock("There may have been an issue encoding your message into the image.", false)
+                ConsoleHelper.PrintConsoleBlock("There may have been an issue encoding your message into the image.", false);
             }
             ConsoleHelper.ReturnToMenuPrompt();
         }
