@@ -12,7 +12,7 @@ namespace Barton___Y2_Project
         public static void GetImageInfo()
         {
             // Gets file loc of image to decode.
-            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to decode.", true);
+            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to decode:", true);
             string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
             while (fileLoc == null)
             {

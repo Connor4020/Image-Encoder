@@ -38,15 +38,26 @@ namespace Barton___Y2_Project
 
 
 
-        // TODO: FUncion here to handle asking fileLoc to display metadata.
+        // Could be done in a cleaner way??
+        public static void ToolOptionPrintMetadata()
+        {
+            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to read it's metadata.", true);
+            string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            while (fileLoc == null)
+            {
+                ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
+                fileLoc = Console.ReadLine();
+            }
+            PrintImageMetadata(fileLoc);
+        }
 
 
 
         // Creates instance of ImageMetadata and displays all info to the user.
-        public static void DisplayImageMetadata(string fileLoc)
+        public static void PrintImageMetadata(string fileLoc)
         {
-            var meta = new ImageMetadata(fileLoc);
-            var sb = new StringBuilder();
+            ImageMetadata meta = new ImageMetadata(fileLoc);
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine("Image metadata:");
             sb.AppendLine();
             sb.AppendLine($"{"Width",-18}: {meta.Width:N0}px");

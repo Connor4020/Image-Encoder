@@ -15,7 +15,7 @@ namespace Barton___Y2_Project
         public static void GetMessageInfo()
         {
             // Asks for location of image to encode.
-            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to encode.", true);
+            ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to encode:", true);
             string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
             while (fileLoc == null)
             {
@@ -26,7 +26,7 @@ namespace Barton___Y2_Project
 
             // Displays metadata before asking other questions.
             // This is so they know how much info they can store.
-            ImageMetadata.DisplayImageMetadata(fileLoc);
+            ImageMetadata.PrintImageMetadata(fileLoc);
 
 
             // Asks for message to encode.

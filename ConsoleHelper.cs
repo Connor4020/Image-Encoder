@@ -37,7 +37,7 @@ namespace Barton___Y2_Project
         new ToolOption("Exit Program", 0, () => Environment.Exit(0)),
         new ToolOption("Read Hidden Message", 1, ImageDecoder.GetImageInfo),
         new ToolOption("Write Hidden Message", 2, ImageEncoder.GetMessageInfo),
-        //new ToolOption("View Image Metadata", 3, ImageMetadata.DisplayImageMetadata),
+        new ToolOption("View Image Metadata", 3, ImageMetadata.ToolOptionPrintMetadata),
         new ToolOption("Change Image Creation Date", 4, ChangeCreationDate.AlterCreationDate),
         new ToolOption("Convert Image Format", 5, ConvertImageFormat.ConvertFormat),
         };
@@ -72,6 +72,21 @@ namespace Barton___Y2_Project
             ConsoleHelper.PrintConsoleBlock("Please press enter to return to the menu.", true);
             Console.ReadLine();
             Console.Clear();
+        }
+
+
+
+        // Method to return bool based on whether value is an integer.
+        public static bool isInt(string num)
+        {
+            if (!int.TryParse(num, out _))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
 

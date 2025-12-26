@@ -30,18 +30,5 @@ namespace Barton___Y2_Project
                 return null;
             }
         }
-
-        // Method to return bool based on whether value is an integer.
-        public static bool isInt(string num)
-        {
-            if (!int.TryParse(num, out _))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
     }
 }
