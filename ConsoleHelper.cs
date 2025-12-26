@@ -31,15 +31,9 @@ namespace Barton___Y2_Project
 
 
 
-        
-
-
-
         // When you select an option in the terminal, this will print those options again but with no functionality and higlights-
         // the option you chose.
-        // TODO: Refactor this maybe?????
-        /*
-        public static void PrintDummyChoices(int highlightedIndex)
+        public static void PrintDummyChoices(int highlightedIndex, ToolOption[] userOptions)
         {
             PrintConsoleTitle();
             PrintDivider();
@@ -56,7 +50,7 @@ namespace Barton___Y2_Project
                 }
             }
         }
-        */
+       
 
 
 
@@ -86,6 +80,7 @@ namespace Barton___Y2_Project
 
 
 
+        // Used rarely if there's certain formatting nuances the console block can't do as cleanly.
         public static void PrintDivider()
         {
             Console.WriteLine("\n------------------------------------------------------------------------------------------\n");
@@ -93,6 +88,7 @@ namespace Barton___Y2_Project
 
 
 
+        // Loops through each option in userOptions and prints the name and number of it.
         public static void PrintUserChoices(ToolOption[] userOptions)
         {
             PrintDivider();

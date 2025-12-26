@@ -22,7 +22,7 @@ class Program
 
 
     static void Main(string[] args)
-    { 
+    {
         // First functions that are run.
         // Loops indefintetly until option '0' in the program is selected.
         while (true)
@@ -32,8 +32,6 @@ class Program
             int userChoice = AskForUserDecision();
             ExecuteUserDecision(userChoice);
         }
-
-
         // Files on my desktop for quick access during testing:
         // C:\Users\proga\Desktop\24Depth.png
         // C:\Users\proga\Desktop\32Depth.png
@@ -42,13 +40,17 @@ class Program
 
 
 
+    // Just executes function inside userOption object.
     private static void ExecuteUserDecision(int optionNum)
     {
         userOptions[optionNum].Execute();
+        Console.Clear();
+        ConsoleHelper.PrintDummyChoices(optionNum, userOptions);
     }
 
 
 
+    // Returns integer based on what option user wants to choose.
     private static int AskForUserDecision()
     {
         ConsoleHelper.PrintConsoleBlock("Please selection an option above:", true);
