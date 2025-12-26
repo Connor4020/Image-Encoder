@@ -44,6 +44,7 @@ namespace Barton___Y2_Project
                 fileLoc = Console.ReadLine();
             }
 
+
             // Confirms current file type and prints options.
             string imageType = Path.GetExtension(fileLoc);
             ConsoleHelper.PrintConsoleBlock($"The Image Type you have used is '{imageType}' what would you like to convert it to?", true);
@@ -52,13 +53,14 @@ namespace Barton___Y2_Project
                 Console.WriteLine($"({entry.Key}) {entry.Value}");
             }
 
+
             // Gets users decision.
             int decision = 0;
             while (true)
             {
                 // Valid input checking.
                 string decisionString = Console.ReadLine();
-                if (ImageHelper.isInt(decisionString))
+                if (ConsoleHelper.isInt(decisionString))
                 {
                     decision = Convert.ToInt32(decisionString);
                     if (decision > 12 || decision < 1)
@@ -80,9 +82,5 @@ namespace Barton___Y2_Project
             img.Save($"{Path.GetDirectoryName(fileLoc)}\\NEW.{imageTypesDict[decision]}", imageTypesDict[decision]);
             ConsoleHelper.PrintConsoleBlock($"Image converted and save to: {Path.GetDirectoryName(fileLoc)}\\CONVERTED.{imageTypesDict[decision]}.", false);
         }
-
-
-
-        
     }
 }

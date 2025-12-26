@@ -31,22 +31,14 @@ namespace Barton___Y2_Project
 
 
 
-        // Lists of available user options at the starts.
-        static ToolOption[] userOptions = new ToolOption[]
-        {
-        new ToolOption("Exit Program", 0, () => Environment.Exit(0)),
-        new ToolOption("Read Hidden Message", 1, ImageDecoder.GetImageInfo),
-        new ToolOption("Write Hidden Message", 2, ImageEncoder.GetMessageInfo),
-        new ToolOption("View Image Metadata", 3, ImageMetadata.ToolOptionPrintMetadata),
-        new ToolOption("Change Image Creation Date", 4, ChangeCreationDate.AlterCreationDate),
-        new ToolOption("Convert Image Format", 5, ConvertImageFormat.ConvertFormat),
-        };
+        
 
 
 
         // When you select an option in the terminal, this will print those options again but with no functionality and higlights-
         // the option you chose.
         // TODO: Refactor this maybe?????
+        /*
         public static void PrintDummyChoices(int highlightedIndex)
         {
             PrintConsoleTitle();
@@ -64,9 +56,12 @@ namespace Barton___Y2_Project
                 }
             }
         }
+        */
 
 
 
+        // Allows the user to return to the menu when they press enter.
+        // More user control IMO.
         public static void ReturnToMenuPrompt()
         {
             ConsoleHelper.PrintConsoleBlock("Please press enter to return to the menu.", true);
@@ -98,42 +93,12 @@ namespace Barton___Y2_Project
 
 
 
-        // Prints user options and gets user input
-        // TODO: Refactor this
-        public static void PrintUserChoices()
+        public static void PrintUserChoices(ToolOption[] userOptions)
         {
-            while (true)
+            PrintDivider();
+            foreach (var option in userOptions)
             {
-                PrintDivider();
-                foreach (var option in userOptions)
-                {
-                    Console.WriteLine($"--> {option.OptionNumber}. {option.ConsoleDescription}");
-                }
-                PrintConsoleBlock("Please select an option above:", true);
-                if (int.TryParse(Console.ReadLine(), out int choice))
-                {
-                    var selectedOption = userOptions.FirstOrDefault(option => option.OptionNumber == choice);
-                    if (selectedOption != null)
-                    {
-                        Console.Clear();
-                        PrintDummyChoices(choice);
-                        // The first decision of the program will always start here.
-                        selectedOption.Execute();
-                        break;
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        PrintConsoleTitle();
-                        PrintConsoleBlock("INVALID: NUMBER OUT OF RANGE", false);
-                    }
-                }
-                else
-                {
-                    Console.Clear();
-                    PrintConsoleTitle();
-                    PrintConsoleBlock("INVALID: PLEASE INPUT A NUMBER", false);
-                }
+                Console.WriteLine($"--> {option.OptionNumber}. {option.ConsoleDescription}");
             }
         }
 

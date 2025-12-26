@@ -69,6 +69,10 @@ namespace Barton___Y2_Project
             sb.AppendLine("Please input your custom date & time in the following format: DD/MM/YYYY HH:MM:SS.\n");
             sb.AppendLine("(Please note that dates in the future won't work).");
 
+            // Formatting needed cos of sb.
+            ConsoleHelper.PrintDivider();
+            Console.Write(sb.ToString());
+
 
             ConsoleHelper.PrintConsoleBlock(sb.ToString(), true);
             string customDT = Console.ReadLine();

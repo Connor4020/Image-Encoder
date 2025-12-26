@@ -10,13 +10,13 @@ namespace Barton___Y2_Project
     internal class ImageHelper
     {
 
-
-
         // May not need to be in it's own class but still here for expandability.
         public static bool VerifyFileExists(string inputtedPath)
         {
             return File.Exists(inputtedPath);   
         }
+
+
 
         public static string VerifyUserPath(string inputtedPath)
         {

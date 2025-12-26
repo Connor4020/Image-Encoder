@@ -67,7 +67,10 @@ namespace Barton___Y2_Project
             sb.AppendLine($"{"Format",-18}: {meta.ImgFormat}");
             sb.AppendLine($"{"Date created",-18}: {meta.DateCreated:yyyy-MM-dd HH:mm:ss}");
 
-            ConsoleHelper.PrintConsoleBlock(sb.ToString(), false);
+            // Certain formatting is needed her cos of sb.
+            ConsoleHelper.PrintDivider();
+            Console.Write(sb.ToString());
+            ConsoleHelper.ReturnToMenuPrompt();
         }
     }
 }
