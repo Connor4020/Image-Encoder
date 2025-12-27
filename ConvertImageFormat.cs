@@ -35,10 +35,8 @@ namespace Barton___Y2_Project
 
             // Gets image loc to manipluate.
             ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to change it's format:", true);
-            string fileLoc = Console.ReadLine();
-            fileLoc = fileLoc.Trim('"').Trim();
-            // Checks if filepath exists.
-            while (ImageHelper.VerifyFileExists(fileLoc) == false)
+            string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
                 fileLoc = Console.ReadLine();
@@ -48,38 +46,26 @@ namespace Barton___Y2_Project
             // Confirms current file type and prints options.
             string imageType = Path.GetExtension(fileLoc);
             ConsoleHelper.PrintConsoleBlock($"The Image Type you have used is '{imageType}' what would you like to convert it to?", true);
-            foreach (KeyValuePair<int, ImageFormat> entry in imageTypesDict )
+            foreach (KeyValuePair<int, ImageFormat> entry in imageTypesDict)
             {
                 Console.WriteLine($"({entry.Key}) {entry.Value}");
             }
 
 
             // Gets users decision.
-            int decision = 0;
-            while (true)
+            ConsoleHelper.PrintConsoleBlock("Please enter a file format from 1 through 12:", true);
+            string decision = Console.ReadLine();
+            int decisionInt;
+            while (!int.TryParse(decision, out decisionInt) || !imageTypesDict.Any(option => option.Key == decisionInt))
             {
-                // Valid input checking.
-                string decisionString = Console.ReadLine();
-                if (ConsoleHelper.isInt(decisionString))
-                {
-                    decision = Convert.ToInt32(decisionString);
-                    if (decision > 12 || decision < 1)
-                    {
-                        ConsoleHelper.PrintConsoleBlock("Please enter a valid number from the options provided:", true);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    ConsoleHelper.PrintConsoleBlock("Please enter a valid number from the options provided:", true);
-                }
+                ConsoleHelper.PrintConsoleBlock("Please select a valid value from 1 through 12:", true);
+                decision = Console.ReadLine();
             }
+
+
             // Saves to place where original image was as new image.
             Image img = Image.FromFile(fileLoc);
-            img.Save($"{Path.GetDirectoryName(fileLoc)}\\NEW.{imageTypesDict[decision]}", imageTypesDict[decision]);
+            img.Save($"{Path.GetDirectoryName(fileLoc)}\\NEW.{imageTypesDict[decisionInt]}", imageTypesDict[decisionInt]);
             ConsoleHelper.PrintConsoleBlock($"Image converted and save to: {Path.GetDirectoryName(fileLoc)}\\CONVERTED.{imageTypesDict[decision]}.", false);
         }
     }
