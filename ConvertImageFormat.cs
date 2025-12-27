@@ -66,7 +66,7 @@ namespace Barton___Y2_Project
             // Saves to place where original image was as new image.
             Image img = Image.FromFile(fileLoc);
             img.Save($"{Path.GetDirectoryName(fileLoc)}\\NEW.{imageTypesDict[decisionInt]}", imageTypesDict[decisionInt]);
-            ConsoleHelper.PrintConsoleBlock($"Image converted and save to: {Path.GetDirectoryName(fileLoc)}\\CONVERTED.{imageTypesDict[decision]}.", false);
+            ConsoleHelper.PrintConsoleBlock($"Image converted and save to: {Path.GetDirectoryName(fileLoc)}\\CONVERTED.{imageTypesDict[decisionInt]}.", false);
         }
     }
 }

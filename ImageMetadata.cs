@@ -49,6 +49,7 @@ namespace Barton___Y2_Project
                 fileLoc = Console.ReadLine();
             }
             PrintImageMetadata(fileLoc);
+            ConsoleHelper.ReturnToMenuPrompt();
         }
 
 
@@ -70,7 +71,6 @@ namespace Barton___Y2_Project
             // Certain formatting is needed her cos of sb.
             ConsoleHelper.PrintDivider();
             Console.Write(sb.ToString());
-            ConsoleHelper.ReturnToMenuPrompt();
         }
     }
 }

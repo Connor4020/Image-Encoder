@@ -70,7 +70,6 @@ namespace Barton___Y2_Project
             using StreamReader reader = new StreamReader(cryptoStream, Encoding.UTF8);
 
             return reader.ReadToEnd();
-            Console.WriteLine(reader.ReadToEnd());
 
         }
     }

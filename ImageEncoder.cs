@@ -32,7 +32,7 @@ namespace Barton___Y2_Project
             // Asks for message to encode.
             ConsoleHelper.PrintConsoleBlock("Please input the message to hide within this image:", true);
             string inputtedMessage = Console.ReadLine();
-            while (!String.IsNullOrWhiteSpace(inputtedMessage))
+            while (String.IsNullOrWhiteSpace(inputtedMessage))
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid. The message must be at least one character long.", true);
                 inputtedMessage = Console.ReadLine();
@@ -47,11 +47,12 @@ namespace Barton___Y2_Project
 
             // Creates new instance of class using req field of 'message'.
             // It passes this into the main function. This is done cos the message class has stuff like 'FullEncodedMessage' to make stuff a lil easier. (Also just better reusability).
-            HiddenMessage hiddenmessage = new HiddenMessage(inputtedMessage);
+            string encryptedMessage = CryptoHelper.EncryptString(inputtedPassword, inputtedMessage);
+            HiddenMessage hiddenmessage = new HiddenMessage(encryptedMessage);
             bool succession = EncodeHiddenMessage(fileLoc, hiddenmessage);
             if (succession)
             {
-                ConsoleHelper.PrintConsoleBlock($"Image encoded to: {Path.GetDirectoryName(fileLoc)}\\COPY.png.", false);
+                ConsoleHelper.PrintConsoleBlock($"Image encoded to: {Path.GetDirectoryName(fileLoc)}\\COPY.png", false);
             }
             else
             {
