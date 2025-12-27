@@ -59,7 +59,7 @@ namespace Barton___Y2_Project
         // Returns 32 bit binary number set to the length of the message.
         public static string SetBinaryDeclaration(int messageLength)
         {
-            return Convert.ToString(messageLength, 2).PadLeft(16, '0');
+            return Convert.ToString(messageLength, 2).PadLeft(32, '0');
         }
     }
 }

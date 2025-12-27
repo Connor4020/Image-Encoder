@@ -17,8 +17,13 @@ namespace Barton___Y2_Project
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                fileLoc = Console.ReadLine();
+                fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
             }
+
+
+            // Gets file loc of image to decode.
+            ConsoleHelper.PrintConsoleBlock("Please input the password for this image (if applicable):", true);
+            string password = Console.ReadLine();
 
 
             // Puts into method to decode image.
@@ -30,14 +35,13 @@ namespace Barton___Y2_Project
                 decoded = DecodeHiddenmessage(Console.ReadLine());
             }
             // Displays hiddenn message then prompts user to go back to main menu.
-            ConsoleHelper.PrintConsoleBlock($"Hidden message decoded: " + $"\"{decoded}\".", false);
+            ConsoleHelper.PrintConsoleBlock($"Hidden message decoded: " + $"\"{CryptoHelper.DecryptString(password, decoded)}\".", false);
             ConsoleHelper.ReturnToMenuPrompt();
         }
 
 
 
-        // TODO: Implement dcryption after encryption.
-        // Main function that access the image's info in memory.
+        // Main function that accesses the image's info in memory.
         public static string DecodeHiddenmessage(string fileLocation)
         {
             byte[] fileBytes = File.ReadAllBytes(fileLocation);
@@ -63,7 +67,6 @@ namespace Barton___Y2_Project
                 }
                 int headerBytes = Convert.ToInt32(headerBits.ToString(), 2);
                 // -- - --- - - - -
-
 
 
                 // Reader message bits.

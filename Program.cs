@@ -27,12 +27,10 @@ class Program
         // Loops indefintetly until option '0' in the program is selected.
         while (true)
         {
-            Console.WriteLine("1");
             ConsoleHelper.PrintConsoleTitle();
             ConsoleHelper.PrintUserChoices(userOptions);
             int userChoice = AskForUserDecision();
             ExecuteUserDecision(userChoice);
-            Console.WriteLine("3");
         }
         // Files on my desktop for quick access during testing:
         // C:\Users\proga\Desktop\24Depth.png
@@ -45,7 +43,6 @@ class Program
     // Just executes function inside userOption object.
     private static void ExecuteUserDecision(int optionNum)
     {
-        Console.WriteLine("3");
         Console.Clear();
         ConsoleHelper.PrintDummyChoices(optionNum, userOptions);
         userOptions[optionNum].Execute();

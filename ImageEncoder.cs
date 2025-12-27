@@ -20,7 +20,7 @@ namespace Barton___Y2_Project
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                fileLoc = Console.ReadLine();
+                fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine()); 
             }
             
 
@@ -47,8 +47,8 @@ namespace Barton___Y2_Project
 
             // Creates new instance of class using req field of 'message'.
             // It passes this into the main function. This is done cos the message class has stuff like 'FullEncodedMessage' to make stuff a lil easier. (Also just better reusability).
-            string encryptedMessage = CryptoHelper.EncryptString(inputtedPassword, inputtedMessage);
-            HiddenMessage hiddenmessage = new HiddenMessage(encryptedMessage);
+            //string encryptedMessage = CryptoHelper.EncryptString(inputtedPassword, inputtedMessage);
+            HiddenMessage hiddenmessage = new HiddenMessage(CryptoHelper.EncryptString(inputtedPassword, inputtedMessage));
             bool succession = EncodeHiddenMessage(fileLoc, hiddenmessage);
             if (succession)
             {
@@ -88,6 +88,9 @@ namespace Barton___Y2_Project
 
                 Marshal.Copy(rgbValues, 0, ptr, totalBytes);
                 bitmap.UnlockBits(bitmapData);
+
+                Console.WriteLine(message.BinaryHeader);
+                Console.WriteLine(message.FullEncodedMessage);
 
                 // Error handling just in case anything goes wrong.
                 try

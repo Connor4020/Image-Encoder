@@ -39,7 +39,7 @@ namespace Barton___Y2_Project
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                fileLoc = Console.ReadLine();
+                fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
             }
 
 

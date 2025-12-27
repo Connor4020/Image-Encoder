@@ -47,17 +47,16 @@ namespace Barton___Y2_Project
         
         public static string? DecryptString(string password, string cipherText)
         {
-
+            Console.WriteLine(cipherText);
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
 
-            // COpys salt into byte array.
-            byte[] salt = new byte[16];
-            Array.Copy(cipherBytes, 0, salt, 0, salt.Length);
-
-            // Copys IV into byte array.
+            // Creates ne byte lists for iv and salt.
             byte[] iv = new byte[16];
-            Array.Copy(cipherBytes, salt.Length, iv, 0, iv.Length);
+            byte[] salt = new byte[16];
 
+            // Copys into byte arrays.
+            Array.Copy(cipherBytes, 0, iv, 0, iv.Length);
+            Array.Copy(cipherBytes, iv.Length, salt, 0, salt.Length);
 
             using var key = new Rfc2898DeriveBytes(password, salt, 10000);
             using Aes aes = Aes.Create();
@@ -65,7 +64,7 @@ namespace Barton___Y2_Project
             aes.Key = key.GetBytes(32);
             aes.IV = iv;
 
-            using MemoryStream memStream = new MemoryStream(cipherBytes, salt.Length + iv.Length, cipherBytes.Length - salt.Length - iv.Length);
+            using MemoryStream memStream = new MemoryStream(cipherBytes, iv.Length + salt.Length, cipherBytes.Length - salt.Length - iv.Length);
             using CryptoStream cryptoStream = new CryptoStream(memStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
             using StreamReader reader = new StreamReader(cryptoStream, Encoding.UTF8);
 
