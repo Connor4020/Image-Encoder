@@ -14,6 +14,7 @@ namespace Barton___Y2_Project
         public string BinaryMessage { get; set; }
         public string BinaryHeader { get; set; }
         public string FullEncodedMessage { get; set; }
+        public string BinaryStamp { get; set; }
 
 
 
@@ -23,7 +24,8 @@ namespace Barton___Y2_Project
             Length = message.Length;
             BinaryMessage = ConvertStringToBinary(message);
             BinaryHeader = SetBinaryDeclaration(Length);
-            FullEncodedMessage = BinaryHeader + BinaryMessage;
+            BinaryStamp = "10001000100010001000100010001000";
+            FullEncodedMessage = BinaryStamp + BinaryHeader + BinaryMessage;
         }
 
 

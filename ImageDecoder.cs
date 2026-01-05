@@ -28,14 +28,30 @@ namespace Barton___Y2_Project
 
             // Puts into method to decode image.
             // Returns null if file doesn't exist or password is incorrect.
-            var decoded = DecodeHiddenmessage(fileLoc);
-            while (decoded is null)
+            string decoded = DecodeHiddenmessage(fileLoc);
+            if (decoded is null)
             {
-                ConsoleHelper.PrintConsoleBlock(" --- Incorrect password or file does not exist ---\n ", false);
-                decoded = DecodeHiddenmessage(Console.ReadLine());
+                ConsoleHelper.PrintConsoleBlock("This image has not been encoded with a message", false);
+                ConsoleHelper.ReturnToMenuPrompt();
+                return;
             }
+
+
             // Displays hiddenn message then prompts user to go back to main menu.
-            ConsoleHelper.PrintConsoleBlock($"Hidden message decoded: " + $"\"{CryptoHelper.DecryptString(password, decoded)}\".", false);
+            string decrypted = CryptoHelper.DecryptString(password, decoded);
+            if (decrypted is null)
+            {
+                ConsoleHelper.PrintConsoleBlock("Incorrect password. View encrypted data anyway? ('Y') otherwise press enter", true);
+                string viewEncryptedData = Console.ReadLine().ToLower();
+                if (viewEncryptedData == "y")
+                {
+                    ConsoleHelper.PrintConsoleBlock($"Hidden encrypted message: " + $"\"{decoded}\".", false);
+                }
+            }
+            else
+            {
+                ConsoleHelper.PrintConsoleBlock($"Hidden message decoded: " + $"\"{decrypted}\".", false);
+            }
             ConsoleHelper.ReturnToMenuPrompt();
         }
 
@@ -59,28 +75,63 @@ namespace Barton___Y2_Project
                 Marshal.Copy(ptr, pixelBytes, 0, totalBytes);
                 bitmap.UnlockBits(bitmapData);
 
-                // Read header bits.
-                StringBuilder headerBits = new StringBuilder(32);
-                for (int i = 0; i < 32; i++)
+
+                if (!HasStampOfApproval(pixelBytes))
                 {
-                    headerBits.Append((pixelBytes[i] & 1) == 1 ? '1' : '0');
+                    return null;
                 }
-                int headerBytes = Convert.ToInt32(headerBits.ToString(), 2);
-                // -- - --- - - - -
 
 
-                // Reader message bits.
-                int messageBitCount = headerBytes * 8;
-
-                StringBuilder messageBitsSB = new StringBuilder(messageBitCount);
-                for (int i = 32; i < 32 + messageBitCount; i++)
-                {
-                    messageBitsSB.Append((pixelBytes[i] & 1) == 1 ? '1' : '0');
-                }
-                string messageBits = messageBitsSB.ToString();
-                return HiddenMessage.ConvertBinaryToString(messageBits);
-                // ---- --- - - -- - - 
+                uint messageLengthAsChars = GetMessageCharLength(pixelBytes);
+                uint messageBitCount = messageLengthAsChars * 8;
+                return HiddenMessage.ConvertBinaryToString(GetEncryptedMessage(pixelBytes, messageBitCount));
             }
+        }
+
+
+
+        // ---- ALL HELPER FUNCTIONS BELOW HERE ----
+
+        // Takes in the length of the message (and the bytes to read from) and decodes it (not decrypting yet).
+        public static string GetEncryptedMessage(byte[] pixelBytes, uint messageBitsAmount)
+        {
+            StringBuilder messageBitsSB = new StringBuilder();
+            for (int i = 64; i < 64 + messageBitsAmount; i++)
+            {
+                messageBitsSB.Append((pixelBytes[i] & 1) == 1 ? '1' : '0');
+            }
+            return messageBitsSB.ToString();
+        }
+
+
+
+        // Finds the length of the encoded message and returns it as a uint.
+        public static uint GetMessageCharLength(byte[] pixelBytes)
+        { 
+            StringBuilder headerBits = new StringBuilder(32);
+            for (int i = 32; i < 64; i++)
+            {
+                headerBits.Append((pixelBytes[i] & 1) == 1 ? '1' : '0');
+            }
+            return Convert.ToUInt32(headerBits.ToString(), 2);
+        }
+
+
+
+        // Read stamp bits.
+        public static bool HasStampOfApproval(byte[] pixelBytes)
+        {
+            StringBuilder stampBits = new StringBuilder(32);
+            for (int i = 0; i < 32; i++)
+            {
+                stampBits.Append((pixelBytes[i] & 1) == 1 ? '1' : '0');
+            }
+            string stampString = Convert.ToString(stampBits.ToString());
+            if (stampString != "10001000100010001000100010001000")
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

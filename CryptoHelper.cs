@@ -45,9 +45,8 @@ namespace Barton___Y2_Project
         // Requires password.
         // Cipher text string needs to be base64 (text).
         
-        public static string? DecryptString(string password, string cipherText)
+        public static string DecryptString(string password, string cipherText)
         {
-            Console.WriteLine(cipherText);
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
 
             // Creates ne byte lists for iv and salt.
@@ -68,7 +67,15 @@ namespace Barton___Y2_Project
             using CryptoStream cryptoStream = new CryptoStream(memStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
             using StreamReader reader = new StreamReader(cryptoStream, Encoding.UTF8);
 
-            return reader.ReadToEnd();
+            // Simple error catching in case something goes wrong.
+            try
+            {
+                return reader.ReadToEnd();
+            }
+            catch
+            {
+                return null;
+            }
 
         }
     }

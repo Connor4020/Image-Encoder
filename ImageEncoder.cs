@@ -44,10 +44,9 @@ namespace Barton___Y2_Project
             ConsoleHelper.PrintConsoleBlock("Please input a password to protect your message with (leave blank for no password):", true);
             string inputtedPassword = Console.ReadLine();
 
-
+            
             // Creates new instance of class using req field of 'message'.
             // It passes this into the main function. This is done cos the message class has stuff like 'FullEncodedMessage' to make stuff a lil easier. (Also just better reusability).
-            //string encryptedMessage = CryptoHelper.EncryptString(inputtedPassword, inputtedMessage);
             HiddenMessage hiddenmessage = new HiddenMessage(CryptoHelper.EncryptString(inputtedPassword, inputtedMessage));
             bool succession = EncodeHiddenMessage(fileLoc, hiddenmessage);
             if (succession)
@@ -89,12 +88,10 @@ namespace Barton___Y2_Project
                 Marshal.Copy(rgbValues, 0, ptr, totalBytes);
                 bitmap.UnlockBits(bitmapData);
 
-                Console.WriteLine(message.BinaryHeader);
-                Console.WriteLine(message.FullEncodedMessage);
-
                 // Error handling just in case anything goes wrong.
                 try
                 {
+                    // Saves encoded bits to the same directory as a copy of that image.
                     bitmap.Save(Path.GetDirectoryName(fileLocation) + "\\COPY.png", ImageFormat.Png);
                     return true;
                 }
