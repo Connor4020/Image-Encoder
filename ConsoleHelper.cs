@@ -65,21 +65,6 @@ namespace Barton___Y2_Project
 
 
 
-        // Method to return bool based on whether value is an integer.
-        public static bool isInt(string num)
-        {
-            if (!int.TryParse(num, out _))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-
-
         // Used rarely if there's certain formatting nuances the console block can't do as cleanly.
         public static void PrintDivider()
         {
