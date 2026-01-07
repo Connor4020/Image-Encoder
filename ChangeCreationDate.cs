@@ -27,25 +27,27 @@ namespace Barton___Y2_Project
             // If a decision isn't equal to 1 or 2 then keep asking them.
             ConsoleHelper.PrintConsoleBlock("Would you like to set a custom date or use the current date/time?\n(1) Custom Date \n(2) Current Date/Time", true);
             string decision = Console.ReadLine();
-            while (decision != "1" || decision != "2")
+            int decisionInt;
+            while (!int.TryParse(decision, out decisionInt) || decisionInt > 2 || decisionInt < 1)
             {
-                ConsoleHelper.PrintConsoleBlock("Please enter either (1) or (2):", true);
+                ConsoleHelper.PrintConsoleBlock("Please select either (1) or (2):", true);
                 decision = Console.ReadLine();
             }
 
 
-            if (decision == "1")
+
+            if (decisionInt == 1)
             {
                 ConsoleHelper.PrintConsoleBlock("Please input your custom date and time in the format: DD/MM/YYYY HH:MM:SS\n(Please not that dates in the future won't work):", true);
                 string customDT = Console.ReadLine();
                 while (!DateTime.TryParse(customDT, out _))
                 {
-                    ConsoleHelper.PrintConsoleBlock("Invalid format, please try again:", true);
+                    ConsoleHelper.PrintConsoleBlock("Invalid format, ensure dashes for the date and colons for the time:", true);
                     customDT = Console.ReadLine();
                 }
                 SetCustomDate(DateTime.Parse(customDT));
             }
-            if (decision == "2")
+            if (decisionInt == 2)
             {
                 SetCurrentDate(DateTime.Now);
             }

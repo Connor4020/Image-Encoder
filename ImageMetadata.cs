@@ -64,7 +64,7 @@ namespace Barton___Y2_Project
             sb.AppendLine($"{"Width",-18}: {meta.Width:N0}px");
             sb.AppendLine($"{"Height",-18}: {meta.Height:N0}px");
             sb.AppendLine($"{"Bit depth",-18}: {meta.BitDepth} bpp");
-            sb.AppendLine($"{"Max encoded chars",-18}: {meta.MaxCharLength:N0}");
+            sb.AppendLine($"{"Max encodable chars",-18}: {meta.MaxCharLength:N0}");
             sb.AppendLine($"{"Format",-18}: {meta.ImgFormat}");
             sb.AppendLine($"{"Date created",-18}: {meta.DateCreated:yyyy-MM-dd HH:mm:ss}");
 
