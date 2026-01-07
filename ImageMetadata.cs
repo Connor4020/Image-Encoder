@@ -42,11 +42,11 @@ namespace Barton___Y2_Project
         public static void ToolOptionPrintMetadata()
         {
             ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to read it's metadata.", true);
-            string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            string fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                ImageHelper.VerifyUserPath(Console.ReadLine());
+                fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             }
             PrintImageMetadata(fileLoc);
             ConsoleHelper.ReturnToMenuPrompt();

@@ -16,11 +16,11 @@ namespace Barton___Y2_Project
         {
             // Asks for fileLoc.
             ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to change it's creation date:", true);
-            fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+                fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             }
 
 

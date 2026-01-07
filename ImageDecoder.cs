@@ -13,11 +13,11 @@ namespace Barton___Y2_Project
         {
             // Gets file loc of image to decode.
             ConsoleHelper.PrintConsoleBlock("Please input the file location of an image to decode:", true);
-            string fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+            string fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             while (fileLoc == null)
             {
                 ConsoleHelper.PrintConsoleBlock("Invalid file path, please try again:", true);
-                fileLoc = ImageHelper.VerifyUserPath(Console.ReadLine());
+                fileLoc = ConsoleHelper.VerifyUserPath(Console.ReadLine());
             }
 
 

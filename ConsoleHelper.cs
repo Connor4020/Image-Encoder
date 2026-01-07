@@ -12,6 +12,19 @@ namespace Barton___Y2_Project
     internal class ConsoleHelper
     {
 
+        public static string VerifyUserPath(string inputtedPath)
+        {
+            inputtedPath = inputtedPath.Trim().Trim('"').Trim('\'');
+            if (File.Exists(inputtedPath))
+            {
+                return inputtedPath;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         // Formats messages printed to the console in a nicer way.
         public static void PrintConsoleBlock(string consoleOutput, bool hasUserInput)
         {
